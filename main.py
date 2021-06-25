@@ -63,7 +63,7 @@ def train(model, early_stopping):
 
         if early_stopping.early_stop:
             print("Early stopping")
-            break      
+            break
 
 
 def evaluate(model, val_iter):
@@ -147,7 +147,7 @@ def evaluate(model, val_iter):
     for j,k in zip(temp_eval,temp_imputation):
         loss_dtw.append(dtw(j,k))
 
-    
+
 
     evals = np.asarray(evals)
     imputations = np.asarray(imputations)
@@ -212,11 +212,13 @@ def evaluate_model():
     if torch.cuda.is_available():
         model = model.cuda()
 
-    savepath='./result/EMS/USA_nitrate_mrnn2_1012.pt'
+    #savepath='./result/EMS/USA_nitrate_mrnn2_1012.pt'
+    savepath='./result/test_level_brist.pt'
+
     test(model,savepath)
 
 
 if __name__ == '__main__':
-    # run()
+     run()
     # evaluate the best model
-    evaluate_model()
+   # evaluate_model()
