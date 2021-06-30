@@ -14,7 +14,6 @@ for ctx in open('json/json'):
     x = np.asarray(ctx['values'])
     y = np.asarray(ctx['evals'])
 
-
     x_mask = np.asarray(ctx['masks']).astype(np.bool)
     y_mask = np.asarray(ctx['eval_masks']).astype(np.bool)
 
@@ -25,6 +24,7 @@ for ctx in open('json/json'):
     X.append(x)
     Y.append(y)
     Z.append(int(z))
+
 
 def get_loss(X, X_pred, Y):
     # find ones in Y but not in X (ground truth)
@@ -40,6 +40,7 @@ def get_loss(X, X_pred, Y):
     return {'mae': mae, 'mre': mre}
 
 # Algo1: Mean imputation
+
 
 X_mean = []
 

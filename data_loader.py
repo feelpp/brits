@@ -96,7 +96,6 @@ def collate_fn(recs):
         #     list(map(lambda r: r['eval_masks'], recs)))
         # forwards = torch.FloatTensor(list(map(lambda r: r['forwards'], recs)))
 
-
         values = torch.FloatTensor(
             list(map(lambda r: list(map(lambda x: x['values'], r)), recs)))
         masks = torch.FloatTensor(
@@ -120,12 +119,12 @@ def collate_fn(recs):
         # print('eval_masks:{}'.format(eval_masks.size()))
 
         return {
-            'values': values.permute(0,2,1),
-            'forwards': forwards.permute(0,2,1),
-            'masks': masks.permute(0,2,1),
-            'deltas': deltas.permute(0,2,1),
-            'evals': evals.permute(0,2,1),
-            'eval_masks': eval_masks.permute(0,2,1)
+            'values': values.permute(0, 2, 1),
+            'forwards': forwards.permute(0, 2, 1),
+            'masks': masks.permute(0, 2, 1),
+            'deltas': deltas.permute(0, 2, 1),
+            'evals': evals.permute(0, 2, 1),
+            'eval_masks': eval_masks.permute(0, 2, 1)
         }
 
     ret_dict = {
@@ -151,39 +150,35 @@ def collate_fn(recs):
 
 def get_loader(batch_size=64, shuffle=True):
     data_set = MySet()
-    data_iter = DataLoader(dataset = data_set, \
-                              batch_size = batch_size, \
-                              num_workers = 1, \
-                              shuffle = shuffle, \
-                              pin_memory = True, \
-                              collate_fn = collate_fn
-    )
+    data_iter = DataLoader(dataset=data_set,
+                           batch_size=batch_size,
+                           num_workers=1,
+                           shuffle=shuffle,
+                           pin_memory=True,
+                           collate_fn=collate_fn)
 
     return data_iter
 
 
 def get_train_loader(batch_size=100, shuffle=True):
     data_set = MyTrainSet()
-    data_iter = DataLoader(dataset = data_set, \
-                              batch_size = batch_size, \
-                              num_workers = 1, \
-                              shuffle = shuffle, \
-                              pin_memory = True, \
-                              collate_fn = collate_fn
-    )
+    data_iter = DataLoader(dataset=data_set,
+                           batch_size=batch_size,
+                           num_workers=1,
+                           shuffle=shuffle,
+                           pin_memory=True,
+                           collate_fn=collate_fn)
 
     return data_iter
-    
 
 
 def get_test_loader(batch_size=100, shuffle=False):
     data_set = MyTestSet()
-    data_iter = DataLoader(dataset = data_set, \
-                              batch_size = batch_size, \
-                              num_workers = 1, \
-                              shuffle = shuffle, \
-                              pin_memory = True, \
-                              collate_fn = collate_fn
-    )
+    data_iter = DataLoader(dataset=data_set,
+                           batch_size=batch_size,
+                           num_workers=1,
+                           shuffle=shuffle,
+                           pin_memory=True,
+                           collate_fn=collate_fn)
 
     return data_iter

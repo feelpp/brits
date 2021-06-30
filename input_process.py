@@ -43,6 +43,7 @@ std = np.array(
 
 fs = open('./json/json', 'w')
 
+
 def to_time_bin(x):
     h, m = map(int, x.split(':'))
     return h
@@ -150,4 +151,3 @@ for id_ in patient_ids:
         continue
 
 fs.close()
-

@@ -29,6 +29,7 @@ https://en.wikipedia.org/wiki/Mean_absolute_scaled_error
 # Simple Errors
 # ----------------------------------------------------------------------------------------------------------------------
 
+
 def mae_calc(Y, Yhat):
     """
     Mean Absolute Error (MAE)
@@ -44,6 +45,7 @@ def mae_calc(Y, Yhat):
         mae.append(np.mean(np.absolute(Y[:, i] - Yhat[:, i])))
     mae = np.array(mae)
     return mae
+
 
 def mre_calc(Y, Yhat):
     """
@@ -64,6 +66,7 @@ def mre_calc(Y, Yhat):
 # ----------------------------------------------------------------------------------------------------------------------
 # Percentage Errors
 # ----------------------------------------------------------------------------------------------------------------------
+
 
 def mape_calc(Y, Yhat):
     """
@@ -88,6 +91,7 @@ def mape_calc(Y, Yhat):
         mape.append(np.mean(np.absolute(100 * numerator / denominator)))
     mape = np.array(mape)
     return mape
+
 
 def smape_calc(Y, Yhat):
     """
@@ -119,6 +123,7 @@ def smape_calc(Y, Yhat):
 # ----------------------------------------------------------------------------------------------------------------------
 # Scaled Errors
 # ----------------------------------------------------------------------------------------------------------------------
+
 
 def mase_calc(Y, Yhat):
     """
@@ -154,6 +159,7 @@ def mase_calc(Y, Yhat):
 # Squared Errors
 # ----------------------------------------------------------------------------------------------------------------------
 
+
 def rmse_calc(Y, Yhat):
     """
     Root Mean Squared Error (RMSE)
@@ -169,6 +175,7 @@ def rmse_calc(Y, Yhat):
         rmse.append(np.mean(np.square(Y[:, i] - Yhat[:, i])))
     rmse = np.array(rmse)
     return rmse
+
 
 def nrmse_calc(Y, Yhat):
     """
@@ -195,6 +202,7 @@ def nrmse_calc(Y, Yhat):
 # ----------------------------------------------------------------------------------------------------------------------
 # Calculate error functions
 # ----------------------------------------------------------------------------------------------------------------------
+
 
 def calculate_error(Yhat, Y, print_errors=False):
     """
@@ -261,8 +269,8 @@ def calculate_error(Yhat, Y, print_errors=False):
 
 
 if __name__ == '__main__':
-    x = np.reshape(np.arange(0, 10 * 2), (10, 2)) + np.random.rand(10,2)
-    y = x + np.random.rand(10,2)
+    x = np.reshape(np.arange(0, 10 * 2), (10, 2)) + np.random.rand(10, 2)
+    y = x + np.random.rand(10, 2)
 
     # x = np.reshape(np.ones((10, 2)), (10, 2))
     # y = np.copy(x)

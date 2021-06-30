@@ -54,8 +54,7 @@ def train(model, early_stopping):
                 epoch, (idx + 1) * 100.0 / len(data_iter),
                 run_loss / (idx + 1.0)))
 
-        test_data_iter = data_loader.get_test_loader(
-            batch_size=args.batch_size)
+        test_data_iter = data_loader.get_test_loader(batch_size=args.batch_size)
         valid_loss = evaluate(model, test_data_iter)
 
         # early stop
@@ -158,17 +157,17 @@ def test(model, savepath):
 
     model.load_state_dict(torch.load(savepath))
 
-    test_data_iter = data_loader.get_test_loader(
-        batch_size=args.batch_size)
+    test_data_iter = data_loader.get_test_loader(batch_size=args.batch_size)
     valid_loss = evaluate(model, test_data_iter)
 
 
 def run():
     model = getattr(models,
-                    args.model).Model(args.hid_size, args.impute_weight,
+                    args.model).Model(args.hid_size,
+                                      args.impute_weight,
                                       args.label_weight)
-    total_params = sum(p.numel() for p in model.parameters()
-                       if p.requires_grad)
+
+    total_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print('Total params is {}'.format(total_params))
 
     if torch.cuda.is_available():
@@ -185,10 +184,10 @@ def run():
 
 def evaluate_model():
     model = getattr(models,
-                    args.model).Model(args.hid_size, args.impute_weight,
+                    args.model).Model(args.hid_size,
+                                      args.impute_weight,
                                       args.label_weight)
-    total_params = sum(p.numel() for p in model.parameters()
-                       if p.requires_grad)
+    total_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print('Total params is {}'.format(total_params))
 
     if torch.cuda.is_available():

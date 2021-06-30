@@ -7,6 +7,7 @@ from torch.autograd import Variable
 
 import pandas as pd
 
+
 def to_var(var):
     if torch.is_tensor(var):
         var = Variable(var)
@@ -23,12 +24,14 @@ def to_var(var):
         var = map(lambda x: to_var(x), var)
         return var
 
+
 def stop_gradient(x):
     if isinstance(x, float):
         return x
     if isinstance(x, tuple):
         return tuple(map(lambda y: Variable(y.data), x))
     return Variable(x.data)
+
 
 def zero_var(sz):
     x = Variable(torch.zeros(sz))
