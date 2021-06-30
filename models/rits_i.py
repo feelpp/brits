@@ -15,7 +15,8 @@ import data_loader
 from sklearn import metrics
 
 SEQ_LEN = 22
-INPUT_SIZE =1
+INPUT_SIZE = 1
+
 
 def binary_cross_entropy_with_logits(input, target, weight=None, size_average=True, reduce=True):
     if not (target.size() == input.size()):
@@ -57,6 +58,7 @@ class TemporalDecay(nn.Module):
         gamma = torch.exp(-gamma)
         return gamma
 
+
 class Model(nn.Module):
     def __init__(self, rnn_hid_size, impute_weight, label_weight):
         super(Model, self).__init__()
@@ -71,7 +73,7 @@ class Model(nn.Module):
         self.rnn_cell = nn.LSTMCell(INPUT_SIZE * 2, self.rnn_hid_size)
 
         self.regression = nn.Linear(self.rnn_hid_size, INPUT_SIZE)
-        self.temp_decay = TemporalDecay(input_size = INPUT_SIZE, rnn_hid_size = self.rnn_hid_size)
+        self.temp_decay = TemporalDecay(input_size=INPUT_SIZE, rnn_hid_size=self.rnn_hid_size)
 
         self.out = nn.Linear(self.rnn_hid_size, 1)
 
@@ -107,32 +109,32 @@ class Model(nn.Module):
             h = h * gamma
             x_h = self.regression(h)
 
-            x_c =  m * x +  (1 - m) * x_h
+            x_c = m * x + (1 - m) * x_h
 
             x_loss += torch.sum(torch.abs(x - x_h) * m) / (torch.sum(m) + 1e-5)
 
-            inputs = torch.cat([x_c, m], dim = 1)
+            inputs = torch.cat([x_c, m], dim=1)
 
             h, c = self.rnn_cell(inputs, (h, c))
 
-            imputations.append(x_c.unsqueeze(dim = 1))
+            imputations.append(x_c.unsqueeze(dim=1))
 
-        imputations = torch.cat(imputations, dim = 1)
+        imputations = torch.cat(imputations, dim=1)
 
         y_h = self.out(h)
-        y_loss = binary_cross_entropy_with_logits(y_h, labels, reduce = False)
+        y_loss = binary_cross_entropy_with_logits(y_h, labels, reduce=False)
 
         # only use training labels
         y_loss = torch.sum(y_loss * is_train) / (torch.sum(is_train) + 1e-5)
 
         y_h = F.sigmoid(y_h)
 
-        return {'loss': x_loss * self.impute_weight + y_loss * self.label_weight, 'predictions': y_h,\
-                'imputations': imputations, 'labels': labels, 'is_train': is_train,\
+        return {'loss': x_loss * self.impute_weight + y_loss * self.label_weight, 'predictions': y_h,
+                'imputations': imputations, 'labels': labels, 'is_train': is_train,
                 'evals': evals, 'eval_masks': eval_masks}
 
-    def run_on_batch(self, data, optimizer, epoch = None):
-        ret = self(data, direct = 'forward')
+    def run_on_batch(self, data, optimizer, epoch=None):
+        ret = self(data, direct='forward')
 
         if optimizer is not None:
             optimizer.zero_grad()

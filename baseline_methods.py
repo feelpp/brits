@@ -59,7 +59,7 @@ print(get_loss(X_c, X_mean, Y_c))
 
 # save mean inputation results
 print(X_c.shape, Y_c.shape, Z_c.shape)
-raw_input()
+# input()
 np.save('./result/mean_data.npy', X_mean)
 np.save('./result/mean_label.npy', Z_c)
 
@@ -77,7 +77,7 @@ X_knn = np.concatenate(X_knn, axis=0)
 print('KNN imputation')
 print(get_loss(X_c, X_knn, Y_c))
 
-raw_input()
+# input()
 
 
 # ### Matrix Factorization

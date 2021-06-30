@@ -18,6 +18,7 @@ SEQ_LEN = 26
 INPUT_SIZE = 1
 OUTPUT_SIZE = 1
 
+
 def binary_cross_entropy_with_logits(input, target, weight=None, size_average=True, reduce=True):
     if not (target.size() == input.size()):
         raise ValueError("Target size ({}) must be the same as input size ({})".format(target.size(), input.size()))
@@ -34,6 +35,7 @@ def binary_cross_entropy_with_logits(input, target, weight=None, size_average=Tr
         return loss.mean()
     else:
         return loss.sum()
+
 
 class FeatureRegression(nn.Module):
     def __init__(self, input_size):
@@ -59,8 +61,9 @@ class FeatureRegression(nn.Module):
         z_h = F.linear(x, self.W * Variable(self.m), self.b)
         return z_h
 
+
 class TemporalDecay(nn.Module):
-    def __init__(self, input_size, output_size, diag = False):
+    def __init__(self, input_size, output_size, diag=False):
         super(TemporalDecay, self).__init__()
         self.diag = diag
 
@@ -70,7 +73,7 @@ class TemporalDecay(nn.Module):
         self.W = Parameter(torch.Tensor(output_size, input_size))
         self.b = Parameter(torch.Tensor(output_size))
 
-        if self.diag == True:
+        if self.diag is True:
             assert(input_size == output_size)
             m = torch.eye(input_size, input_size)
             self.register_buffer('m', m)
@@ -84,12 +87,13 @@ class TemporalDecay(nn.Module):
             self.b.data.uniform_(-stdv, stdv)
 
     def forward(self, d):
-        if self.diag == True:
+        if self.diag is True:
             gamma = F.relu(F.linear(d, self.W * Variable(self.m), self.b))
         else:
             gamma = F.relu(F.linear(d, self.W, self.b))
         gamma = torch.exp(-gamma)
         return gamma
+
 
 class Model(nn.Module):
     def __init__(self, rnn_hid_size, impute_weight, label_weight):
@@ -104,15 +108,15 @@ class Model(nn.Module):
     def build(self):
         self.rnn_cell = nn.LSTMCell(self.rnn_hid_size + INPUT_SIZE, self.rnn_hid_size)
 
-        self.temp_decay_h = TemporalDecay(input_size = INPUT_SIZE, output_size = self.rnn_hid_size, diag = False)
-        self.temp_decay_x = TemporalDecay(input_size = INPUT_SIZE, output_size = self.rnn_hid_size, diag = False)
+        self.temp_decay_h = TemporalDecay(input_size=INPUT_SIZE, output_size=self.rnn_hid_size, diag=False)
+        self.temp_decay_x = TemporalDecay(input_size=INPUT_SIZE, output_size=self.rnn_hid_size, diag=False)
 
         self.hist_reg = nn.Linear(self.rnn_hid_size, self.rnn_hid_size)
         self.feat_reg = FeatureRegression(self.rnn_hid_size)
 
         self.weight_combine = nn.Linear(self.rnn_hid_size * 2, self.rnn_hid_size)
 
-        self.dropout = nn.Dropout(p = 0.5)
+        self.dropout = nn.Dropout(p=0.5)
         self.out = nn.Linear(self.rnn_hid_size, 1)
 
     def forward(self, data, direct):
@@ -151,26 +155,26 @@ class Model(nn.Module):
 
             x_h = m * x + (1 - m) * (1 - gamma_x) * f
 
-            inputs = torch.cat([x_h, m], dim = 1)
+            inputs = torch.cat([x_h, m], dim=1)
 
             h, c = self.rnn_cell(inputs, (h, c))
 
-            imputations.append(x_h.unsqueeze(dim = 1))
+            imputations.append(x_h.unsqueeze(dim=1))
 
-        imputations = torch.cat(imputations, dim = 1)
+        imputations = torch.cat(imputations, dim=1)
 
         y_h = self.out(self.dropout(h))
-        y_loss = binary_cross_entropy_with_logits(y_h, labels, reduce = False)
+        y_loss = binary_cross_entropy_with_logits(y_h, labels, reduce=False)
         y_loss = torch.sum(y_loss * is_train) / (torch.sum(is_train) + 1e-5)
 
         y_h = F.sigmoid(y_h)
 
-        return {'loss': y_loss, 'predictions': y_h,\
-                'imputations': imputations, 'labels': labels, 'is_train': is_train,\
+        return {'loss': y_loss, 'predictions': y_h,
+                'imputations': imputations, 'labels': labels, 'is_train': is_train,
                 'evals': evals, 'eval_masks': eval_masks}
 
     def run_on_batch(self, data, optimizer, epoch=None):
-        ret = self(data, direct = 'forward')
+        ret = self(data, direct='forward')
 
         if optimizer is not None:
             optimizer.zero_grad()
