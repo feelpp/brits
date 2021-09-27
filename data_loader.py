@@ -9,6 +9,26 @@ import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
 
+# class MySet(Dataset):
+#     def __init__(self):
+#         super(MySet, self).__init__()
+#         self.content = open('./json/json').readlines()
+
+#         indices = np.arange(len(self.content))
+#         val_indices = np.random.choice(indices, len(self.content) // 5)
+
+#         self.val_indices = set(val_indices.tolist())
+
+#     def __len__(self):
+#         return len(self.content)
+
+#     def __getitem__(self, idx):
+#         rec = json.loads(self.content[idx])
+#         if idx in self.val_indices:
+#             rec['is_train'] = 0
+#         else:
+#             rec['is_train'] = 1
+#         return rec
 
 class MySet(Dataset):
     def __init__(self):
@@ -30,6 +50,7 @@ class MySet(Dataset):
         else:
             rec['is_train'] = 1
         return rec
+
 
 
 class MyTrainSet(Dataset):
