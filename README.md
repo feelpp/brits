@@ -8,7 +8,7 @@ Some key changes:
 
 1. Only train the model on train data and only evaluate it on test data
 
-    The previous implementation evaluated the model based on all data (train+test), which is hardly right in any situation. And makes the resutls look much better!!
+    The previous implementation evaluated the model based on all data (train+test), which is hardly right in any situation. And makes the results look much better!!
 
 2. Make the model a pure imputation model
 
@@ -16,7 +16,7 @@ Some key changes:
 
 3. Support Python 3.6
 
-4. Limited by the model's design (input dim == output dim), in order to impute only one variable in the TS data, I can only input TS with 1 dim. 
+4. Limited by the model's design (input dim == output dim), in order to impute only one variable in the TS data, I can only input TS with 1 dim.
 
 5. There are two branches in this repository: newmodel and oldmodel
     * Newmodel: based on imputation here: https://github.com/caow13/BRITS

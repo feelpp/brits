@@ -60,10 +60,11 @@ from torch.utils.data import Dataset, DataLoader
 
 # Modif
 class MyTrainSet(Dataset):
-    def __init__(self):
+    def __init__(self, input_path=None):
         super(MyTrainSet, self).__init__()
         # self.content = open('./csv/ibat/preprocess/train_raw_results_demo.csv').readlines()
-        self.path = './csv/ibat/preprocess/train_raw_results_demo.csv'
+        # self.path = './csv/ibat/preprocess/train_raw_results_demo.csv'
+        self.path = input_path
         self.content = pd.read_csv(self.path, header=0) # , chunksize=self.chunksize)
 
         indices = np.arange(len(self.content))
@@ -119,10 +120,11 @@ class MyTrainSet(Dataset):
 
 # Modif
 class MyTestSet(Dataset):
-    def __init__(self):
+    def __init__(self, input_path=None):
         super(MyTestSet, self).__init__()
         # self.content = open('./json/EMS/USA/USA_nitrate_2test1012.json').readlines()
-        self.path = './csv/ibat/preprocess/test_raw_results_demo.csv'
+        # self.path = './csv/ibat/preprocess/test_raw_results_demo.csv'
+        self.path = input_path
         self.content = pd.read_csv(self.path, header=0) # , chunksize=self.chunksize)
 
         indices = np.arange(len(self.content))

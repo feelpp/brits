@@ -61,10 +61,10 @@ def prepare_dat(input, output):
     data['label'] = 0
 
     with open(output, 'w') as outfile:
-        json.dump(data, outfile)
+        json.dump(data, outfile, indent=4)
 
 
 if __name__ == '__main__':
-    input_data = "/scratch/stoll/brits/csv/ibat/initial/raw_results_demo.csv"
-    output_json = "/scratch/stoll/brits/csv/ibat/preprocess/essai_prepare_tf.json"
+    input_data = "/scratch/stoll/brits/ibat_data/csv/initial/raw_results_demo_non_agregated.csv"
+    output_json = "/scratch/stoll/brits/ibat_data/json/preprocess/essai_prepare_tf.json"
     prepare_dat(input_data, output_json)
